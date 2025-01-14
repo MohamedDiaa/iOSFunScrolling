@@ -13,6 +13,7 @@ struct ScollBarsApp: App {
         WindowGroup {
             
             ContentView()
+                .preferredColorScheme(.dark)
         }
     }
 }

@@ -16,32 +16,51 @@ struct HomeView: View {
 
         ScrollView {
 
-            VStack(spacing: 80){
+            LazyVStack(spacing: 80){
 
                 ForEach($bars, id: \.self) { $bar in
 
                     GeometryReader { proxy in
 
-                        RoundedRectangle(cornerRadius: 40)
-                            .fill(bar.color)
-                            .frame(width: calculatWdith(proxy) , height: 40)
+                        HStack {
+                            RoundedRectangle(cornerRadius: 40)
+                                .fill(bar.color)
+                                .frame(width: calculatWdith(proxy) , height: 40)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
             }
             .frame(maxWidth: .infinity,maxHeight: .infinity)
-            .scrollIndicators(.hidden)
             .padding()
         }
+        .scrollIndicators(.hidden)
+
     }
 
     func calculatWdith(_ proxy: GeometryProxy) -> CGFloat {
 
-        let minY = abs(proxy.frame(in: .scrollView(axis: .vertical)).minY)
+        let minY = proxy.frame(in: .scrollView(axis: .vertical)).minY
+        let maxWdith: CGFloat =  0.8 * size.width
 
-//        let offset = minY > (size.height / 2) ? minY - size.height /
+        print(minY ,size.height)
+        if(minY <= 0) {
+            return 0
+        }
+        else if(minY <= size.height / 2) {
+            return maxWdith * 1.5 * minY / size.height;
 
-        return 300 * minY / size.height;
+        }
+        else if(minY > size.height) {
+            return 0
+        }
+
+        else {
+            return maxWdith * 1.5 * (size.height - minY) / size.height;
+
+        }
+
     }
 }
 
