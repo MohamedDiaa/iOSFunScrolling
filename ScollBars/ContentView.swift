@@ -9,38 +9,34 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var bars: [Bar]
-
     var body: some View {
-
-        ScrollView {
-
-            VStack(spacing: 30){
-
-                ForEach(bars, id: \.self) { bar in
-
-                    RoundedRectangle(cornerRadius: 40)
-                        .fill(bar.color)
-                        .frame(width: 300, height: 40)
-                        .onGeometryChange(for: CGRect.self) { proxy in
-                            proxy.frame(in: .global)
-                        } action: { newValue in
-                            
-                        }
-
-
-
-                }
-            }
+        GeometryReader {proxy in
+            HomeView(bars: getBars(), size: proxy.size)
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity,alignment: .center)
     }
 }
 
-//#Preview {
-//    ContentView(colors: )
-//}
+func getBars() -> [Bar] {
+    (0..<100).map { _ in
+        Color(
+            red: Double.random(in: 0...1),
+            green: .random(in: 0...1),
+            blue: .random(in: 0...1)
+        )
+    }
+    .map { color in
+        Bar(color: color, point: .zero)
+    }
+}
+
+struct Bar: Identifiable, Hashable {
+    var id = UUID().uuidString
+    var color: Color
+    var point: CGPoint
+}
+
 
 #Preview {
-    ContentView(bars: [Bar(color: .blue),Bar(color: .red),Bar(color: .brown),Bar(color: .white)])
+    ContentView()
 }
