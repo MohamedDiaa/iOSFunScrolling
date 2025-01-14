@@ -16,7 +16,7 @@ struct HomeView: View {
 
         ScrollView {
 
-            LazyVStack(spacing: 80){
+            LazyVStack(spacing: 60){
 
                 ForEach($bars, id: \.self) { $bar in
 
@@ -44,7 +44,6 @@ struct HomeView: View {
         let minY = proxy.frame(in: .scrollView(axis: .vertical)).minY
         let maxWdith: CGFloat =  0.8 * size.width
 
-        print(minY ,size.height)
         if(minY <= 0) {
             return 0
         }
